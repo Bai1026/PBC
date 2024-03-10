@@ -40,8 +40,5 @@ while True:
     if not found_better:
         break
 
-print(best_order, min_delay, sep=',')
-print(type(best_order))
-
 best_order_str = ','.join(map(str, best_order))
 print(f"{best_order_str};{min_delay}")
