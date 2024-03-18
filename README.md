@@ -5,5 +5,5 @@
 
 - How to check the code style
 ```bash
-pycodestyle --ignore=E121,E123,E126,E133,E226,E704,W503,W504,W505,E501,W292,W391
+pycodestyle --ignore=E121,E123,E126,E133,E226,E704,W503,W504,W505,E501,W292,W391 script.py
 ```
