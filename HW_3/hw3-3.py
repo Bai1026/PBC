@@ -22,6 +22,7 @@ for i in range(len(init_order) - 1):
 
 # For calculating the minmum delay time
 min_delay = float('inf')
+# min_delay = 9999999999
 
 for order in order_list:
     used_time = 0
