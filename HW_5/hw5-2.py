@@ -1,23 +1,3 @@
-# happy_red = int(input())
-# happy_white = int(input())
-# happy_yellow = int(input())
-
-# true_red = int(input())
-# true_white = int(input())
-# true_yellow = int(input())
-
-# red_min = int(input())
-# white_yellow_min = int(input())
-# red3_white_min = int(input())
-
-# budget = int(input())
-
-strategy = 0
-price_happiness = 800
-price_heart = 1000
-# assign inf for futher min price test
-min_price = float('inf')
-
 # max condition is only buy one item with maximum num(ex: budget // price_happiness + 1)
 # +1 for the equivalent condition
 def within_budget(i, j, price_happiness, price_heart, budget):
@@ -28,9 +8,9 @@ def within_budget(i, j, price_happiness, price_heart, budget):
     return is_within_budget
 
 def meet_one_req(i, j, happy_flower, heart_flower, price_happiness, price_heart, budget, requirement):
-    happy_red, happy_white, happy_yellow = map(int, happy_flower.split(','))
-    true_red, true_white, true_yellow = map(int, heart_flower.split(','))
-    red_min, white_yellow_min, red3_white_min = map(int, requirement.split(','))
+    happy_red, happy_white, happy_yellow = happy_flower
+    true_red, true_white, true_yellow = heart_flower
+    red_min, white_yellow_min, red3_white_min = requirement
 
     total_price = i * price_happiness + j * price_heart
 
@@ -43,4 +23,25 @@ def meet_one_req(i, j, happy_flower, heart_flower, price_happiness, price_heart,
     else:
         return budget + 1
 
-# print(strategy, min_price, sep=',')
+
+happy_flower = [5,10,4]
+heart_flower = [3,6,2]
+requirement = [200,100,50]
+budget = 6000
+
+strategy = 0
+price_happiness = 800
+price_heart = 1000
+
+min_price = budget + 1
+counter = 0
+
+for i in range(budget // price_happiness + 1):
+    for j in range(budget // price_heart + 1):
+        if within_budget(i, j, price_happiness, price_heart, budget) == True:
+            counter += 1
+            price = meet_one_req(i, j, happy_flower, heart_flower, price_happiness, price_heart, budget, requirement)
+            if price < min_price:
+                min_price = price
+
+print(counter, min_price)

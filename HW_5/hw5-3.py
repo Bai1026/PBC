@@ -1,4 +1,4 @@
-'''This function is for cleaning the useless or messy punctuation'''
+# This function is for cleaning the useless or messy punctuation
 def clean_word(word):
     punctuation = ".,:;?!'\"-"
     # Replace each punctuation with space since if replace by nothing some error would occur.
@@ -7,7 +7,7 @@ def clean_word(word):
     return word
 
 
-'''This function is to count the number of positive and negative word in each sentence'''
+# This function is to count the number of positive and negative word in each sentence
 def word_detection(sentence, pos_list, neg_list):
     pos_count = 0
     neg_count = 0
@@ -27,7 +27,7 @@ def word_detection(sentence, pos_list, neg_list):
     return pos_count, neg_count
 
 
-'''Main function'''
+# Main Function
 def main():
     n = int(input().strip('\n'))
     pos_list = ['good', 'best', 'awesome', 'excellent', 'wonderful']
