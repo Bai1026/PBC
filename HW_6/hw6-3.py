@@ -1,8 +1,6 @@
-'''do not use the enumerate in this HW =='''
-
 # This function is for cleaning the useless or messy punctuation
 def clean_word(word):
-    punctuation = ".,:;?!'\"-"
+    punctuation = ".,:;?!\'\"-\\"
     # Replace each punctuation with space since if replace by nothing some error would occur.
     for p in punctuation:
         word = str(word).replace(p, " ")
@@ -29,7 +27,7 @@ def word_detection(sentence, pos_list, neg_list):
     return pos_count, neg_count
 
 
-# get all the input first
+# get all the input first, and store in the sentence_list
 def get_input_string():
     sentence_list = []
     n = int(input().strip('\n'))
@@ -41,90 +39,62 @@ def get_input_string():
 
 def get_common_dict(input_list, compare_list, ALPHA_BETA):
     common_dict = {}
-    # go through the ALPHA_BETA list in order
-    for idx, tmp_list in enumerate(compare_list):
+    # go through the ALPHA_BETA list in order, and since we can not use enumerate, use idx += 1 instead
+    idx = 0
+    for tmp_list in compare_list:
+        # to count the number of the predictions and labels in common place
         count = 0
         for i in range(len(input_list)):
             if input_list[i] == tmp_list[i]:
                 count += 1
         common_dict[tuple(ALPHA_BETA[idx])] = count
-        print(tuple(ALPHA_BETA[idx]))
+        idx += 1
 
+    # find the maximum number of common dictionary.
     max_value = max(common_dict.values())
 
+    # get the dictionary with the max. values
     max_common_dict = {key: value for key, value in common_dict.items() if value == max_value}
 
     return max_common_dict
 
 
-# Main Function
-def main():
-    n, sentence_list, LABEL = get_input_string()
+n, sentence_list, LABEL = get_input_string()
 
-    POS_LIST = ['good', 'best', 'awesome', 'excellent', 'wonderful']
-    NEG_LIST = ['bad', 'worst', 'stupid', 'shame']
-    ALPHA_BETA = [[1,1], [1,2], [1,3], [2,1], [2,3], [3,1], [3,2]]
-    predict_list = []
+POS_LIST = ['good', 'best', 'awesome', 'excellent', 'wonderful']
+NEG_LIST = ['bad', 'worst', 'stupid', 'shame']
 
-    # go through the APHPA_BETA list in order
-    for hyper_parameter in ALPHA_BETA:
-        results = []
-        print(hyper_parameter)
-        for i in range(n):
-            sentence = sentence_list[i]
+# define the alpha and beta like this would not occur the order issues.
+ALPHA_BETA = [[1, 1], [1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2]]
+predict_list = []
 
-            alpha = hyper_parameter[0]
-            beta = hyper_parameter[1]
-            # get the positive and negeative num in each sentence
-            pos_count, neg_count = word_detection(sentence, POS_LIST, NEG_LIST)
+# go through the APHPA_BETA list in order
+for hyper_parameter in ALPHA_BETA:
+    results = []
+    # print(hyper_parameter)
+    for i in range(n):
+        sentence = sentence_list[i]
 
-            # from the formula, and the CONST list -> we get each scores in every round and store in the result_list
-            sentence_score = alpha * pos_count - beta * neg_count
+        alpha = hyper_parameter[0]
+        beta = hyper_parameter[1]
+        # get the positive and negeative num in each sentence
+        pos_count, neg_count = word_detection(sentence, POS_LIST, NEG_LIST)
 
-            if sentence_score >= 0:
-                results.append(1)
-            else:
-                results.append(0)
+        # from the formula, and the CONST list -> we get each scores in every round and store in the result_list
+        sentence_score = alpha * pos_count - beta * neg_count
 
-        predict_list.append(results)
+        if sentence_score >= 0:
+            results.append(1)
+        else:
+            results.append(0)
 
-    # print(LABEL)
-    # print(",".join(map(str, results)))
-    # print(predict_list)
-    max_common_dict = get_common_dict(LABEL, predict_list, ALPHA_BETA)
-    print(max_common_dict)
+    predict_list.append(results)
 
-    alpha = list(max_common_dict.keys())[0][0]
-    beta = list(max_common_dict.keys())[0][1]
-    value = list(max_common_dict.values())[0]
+max_common_dict = get_common_dict(LABEL, predict_list, ALPHA_BETA)
 
-    print(alpha, beta, value, sep=',')
+# since the order we add into the max_common_dict is in order, just print the first set of the results.
+alpha = list(max_common_dict.keys())[0][0]
+beta = list(max_common_dict.keys())[0][1]
+value = list(max_common_dict.values())[0]
 
-
-if __name__ == "__main__":
-    main()
-
-
-'''
-7
-The food was good AND excellent. However, the service was bad!
-The movie was awesome; the experience was wonderful.
-The instructor tried his best, but the course IS still the worst.
-I cannot tell whether the food iS good Or bad. But the waiter IS stupid. 
-The lapTOP isss the BeSt ! Wonderful performance! Awesome!
-This book makes no sense; I feel shame that the authors are NTUalumni. 
-Winning the award was an "terrific " experience ,truly the best-feeling.
-1,1,0,0,1,0,1
-'''
-
-'''
-7
-The food was good AND excellent. However, the service was bad!
-The movie was awesome; the experience was wonderful.
-The instructor tried his best, but the course IS still the worst.
-I cannot tell whether the food iS good Or bad. But the waiter IS stupid. 
-The lapTOP isss the BeSt ! Wonderful performance! Awesome!
-This book makes no sense; I feel shame that the authors are NTUalumni. 
-Winning the award was an "terrific " experience ,truly the best-feeling.
-1,1,0,0,1,0,1
-'''
+print(alpha, beta, value, sep=',')
