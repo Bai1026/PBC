@@ -29,12 +29,6 @@ def process_strings(string_list):
     
     return processed_strings, replacement_count
 
-# # Example usage:
-# input_strings = [
-#     "this is a  western book",
-#     "  i am moving toward   the   east",
-#     "east east eastnorth beast"
-# ]
 
 n = int(input())
 input_strings = []
